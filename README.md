@@ -29,7 +29,7 @@ cp prompts.sample.txt prompts.txt
 
 ## 🚀 CLI Commands & Usage
 
-### 1. Batch Generation (`run.js`)
+### 1. Batch Generation
 Iterates through `prompts.txt` and drives a Chrome instance to enter prompts and wait for image generation.
 
 **Basic Run:**
@@ -47,7 +47,7 @@ npm run start -- --skip-download
 npm run start -- --start 8 --project <PROJECT_UUID> --skip-download
 ```
 
-### 2. Bulk Downloading (`download.js`)
+### 2. Bulk Downloading
 If you skipped downloading during generation, use this command to download all images from a specific project in 2K resolution.
 
 ```bash
