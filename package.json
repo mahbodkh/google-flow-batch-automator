@@ -1,0 +1,22 @@
+{
+  "name": "google-flow-automator",
+  "version": "1.0.0",
+  "description": "A Puppeteer automation script to batch generate and bulk download 2K images from Google Flow.",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js",
+    "download": "node download.js"
+  },
+  "keywords": [
+    "puppeteer",
+    "automation",
+    "google-flow",
+    "batch-generator"
+  ],
+  "author": "Open Source Community",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^25.4.0"
+  }
+}
