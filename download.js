@@ -179,8 +179,8 @@ async function run() {
       if (optionPos) {
         console.log(`  ✅ Selected ${optionPos.text}`);
         await page.mouse.click(optionPos.x, optionPos.y);
-        console.log("  ⏳ Waiting 20 seconds for API upscale and download...");
-        await sleep(20000); // Wait 20s for upscale and download
+        console.log("  ⏳ Waiting 12 seconds for API upscale and download...");
+        await sleep(12000); // Wait 12s for upscale and download
       } else {
         console.log("  ⚠️ Download options not found.");
       }
