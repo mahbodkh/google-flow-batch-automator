@@ -24,8 +24,18 @@ npm install
 ```
 
 ### 3. Setup your prompts
-Create a copy of `prompts.sample.txt` and rename the copy to `prompts.txt`. 
-Open `prompts.txt` and paste your desired prompts (one prompt per line).
+The script reads prompts from a file named `prompts.txt`. It reads **line-by-line**, meaning every single line in the text file is treated as a completely separate generation task.
+
+1. Create a copy of `prompts.sample.txt` and rename it to `prompts.txt`. 
+2. Open `prompts.txt` and paste your list of prompts. 
+
+**Example of how your `prompts.txt` should look:**
+```text
+A futuristic cyberpunk city at night with neon lights
+A beautiful golden retriever playing in a field of sunflowers
+A minimalist geometric abstract painting with bold red and black shapes
+```
+*(Notice how there are no numbers or bullet points—just hit 'Enter' for a new prompt!)*
 
 ## 🚀 CLI Commands & Usage
 
