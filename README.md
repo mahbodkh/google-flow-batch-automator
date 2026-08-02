@@ -23,7 +23,13 @@ cd google-flow-batch-automator
 npm install
 ```
 
-### 3. Setup your prompts
+### 3. First Run & Google Login
+Because the script isolates its data in a local `.chrome-profile` folder to avoid messing with your personal browser, **you will not be logged into Google on the first run.**
+- When you run the script for the very first time, Chrome will automatically launch.
+- You must manually log into your Google Account in that Chrome window so you can access Google Flow.
+- If the script times out while you are logging in, simply log in, stop the script (`Ctrl+C`), and run it again. Your session will be saved for all future runs!
+
+### 4. Setup your prompts
 The script reads prompts from a file named `prompts.txt`. It reads **line-by-line**, meaning every single line in the text file is treated as a completely separate generation task.
 
 1. Create a copy of `prompts.sample.txt` and rename it to `prompts.txt`. 
