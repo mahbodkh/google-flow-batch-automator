@@ -19,6 +19,11 @@ if (!PROJECT_ID) {
   process.exit(1);
 }
 
+const PROJECT_DIR = path.join(__dirname, "downloads", PROJECT_ID);
+if (!fs.existsSync(PROJECT_DIR)) {
+  fs.mkdirSync(PROJECT_DIR, { recursive: true });
+}
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ── Auto-Launch Chrome ────────────────────────────────────────────
@@ -72,7 +77,8 @@ async function connectOrLaunchChrome() {
 }
 
 async function run() {
-  console.log(`\n🚀 Starting bulk download for project: ${PROJECT_ID}\n`);
+  console.log(`\n🚀 Starting bulk download for project: ${PROJECT_ID}`);
+  console.log(`📁 Saving to: ./downloads/${PROJECT_ID}/\n`);
 
   // Connect to Chrome or launch it
   const browser = await connectOrLaunchChrome();
@@ -81,11 +87,11 @@ async function run() {
   let page = pages.find((p) => p.url().includes("labs.google"));
   if (!page) page = pages[0];
 
-  // Set download folder
+  // Set download folder to the Project-specific folder
   const client = await browser.target().createCDPSession();
   await client.send("Browser.setDownloadBehavior", {
     behavior: "allow",
-    downloadPath: DOWNLOADS_DIR,
+    downloadPath: PROJECT_DIR,
     eventsEnabled: true
   });
 
@@ -94,11 +100,11 @@ async function run() {
   await page.goto(targetUrl, { waitUntil: "networkidle2", timeout: 30000 });
   await sleep(5000);
 
-  // Re-set download behavior after navigation
+  // Re-set download behavior after navigation just in case
   const dlClient = await browser.target().createCDPSession();
   await dlClient.send("Browser.setDownloadBehavior", {
     behavior: "allow",
-    downloadPath: DOWNLOADS_DIR,
+    downloadPath: PROJECT_DIR,
     eventsEnabled: true
   });
 
@@ -173,7 +179,8 @@ async function run() {
       if (optionPos) {
         console.log(`  ✅ Selected ${optionPos.text}`);
         await page.mouse.click(optionPos.x, optionPos.y);
-        await sleep(8000); // Wait for upscale and download
+        console.log("  ⏳ Waiting 20 seconds for API upscale and download...");
+        await sleep(20000); // Wait 20s for upscale and download
       } else {
         console.log("  ⚠️ Download options not found.");
       }

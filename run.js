@@ -254,7 +254,8 @@ async function downloadImage(page) {
   if (optionPos) {
     console.log(`    ✅ Selecting option: ${optionPos.text}`);
     await page.mouse.click(optionPos.x, optionPos.y);
-    await sleep(8000); // Wait for upscale and download
+    console.log("    ⏳ Waiting 20 seconds for API upscale and download...");
+    await sleep(20000); // Wait for upscale and download
     return true;
   }
 
@@ -366,11 +367,18 @@ async function main() {
   // Create a fresh project once at the start
   await createNewProject(page);
 
+  // Extract Project UUID to create a subfolder
+  const url = page.url();
+  const match = url.match(/\/project\/([a-zA-Z0-9-]+)/);
+  const currentProject = match ? match[1] : "default";
+  const projectDir = path.join(DOWNLOADS_DIR, currentProject);
+  fs.mkdirSync(projectDir, { recursive: true });
+
   // Re-set download behavior after navigation
   const dlClient = await browser.target().createCDPSession();
   await dlClient.send("Browser.setDownloadBehavior", {
     behavior: "allow",
-    downloadPath: DOWNLOADS_DIR,
+    downloadPath: projectDir,
     eventsEnabled: true
   });
 
