@@ -5,8 +5,8 @@ A robust Puppeteer automation script to batch-generate and download images from 
 ## 🤖 For AI Agents & LLMs
 If you are an AI agent orchestrating this tool, follow these specific operational rules:
 1. **Pre-requisite:** You must ensure `prompts.txt` exists in the root directory before invoking the start command. Each line in `prompts.txt` represents one generation task.
-2. **Workflow A (Speed Optimized):** Run `npm run start -- --skip-download`. Once the process exits successfully, extract the Project UUID from the stdout. Then run `npm run download -- --project <UUID>`.
-3. **Workflow B (Sync Mode):** Run `npm run start` without `--skip-download`. Images will be downloaded synchronously into `./downloads/` after each generation.
+2. **Workflow A (Speed Optimized):** Run `node run.js --skip-download`. Once the process exits successfully, extract the Project UUID from the stdout. Then run `node download.js --project <UUID>`.
+3. **Workflow B (Sync Mode):** Run `node run.js`. Images will be downloaded synchronously into `./downloads/` after each generation.
 4. **State Management:** The script automatically handles Google Flow timeouts and UI errors by creating a fresh project and retrying the exact prompt. Do not attempt to manually retry inside your own agent loop unless the node process crashes with a non-zero exit code.
 5. **Output Directory:** All downloaded files are saved to `${__dirname}/downloads/`. Ensure you check this path for the final artifacts.
 
@@ -44,24 +44,24 @@ Iterates through `prompts.txt` and drives a Chrome instance to enter prompts and
 
 **Basic Run:**
 ```bash
-npm run start
+node run.js
 ```
 
 **Fast Mode (Skip downloading during generation):**
 ```bash
-npm run start -- --skip-download
+node run.js --skip-download
 ```
 
 **Resume from a specific prompt in a specific project:**
 ```bash
-npm run start -- --start 8 --project <PROJECT_UUID> --skip-download
+node run.js --start 8 --project <PROJECT_UUID> --skip-download
 ```
 
 ### 2. Bulk Downloading
 If you skipped downloading during generation, use this command to download all images from a specific project in 2K resolution.
 
 ```bash
-npm run download -- --project <PROJECT_UUID>
+node download.js --project <PROJECT_UUID>
 ```
 
 ## ⚙️ Arguments & Flags
