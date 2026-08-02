@@ -21,11 +21,11 @@ cd google-flow-batch-automator
 
 # 2. Install dependencies (Puppeteer)
 npm install
+```
 
-# 3. Setup your prompts
+### 3. Setup your prompts
 Create a copy of `prompts.sample.txt` and rename the copy to `prompts.txt`. 
 Open `prompts.txt` and paste your desired prompts (one prompt per line).
-```
 
 ## 🚀 CLI Commands & Usage
 
