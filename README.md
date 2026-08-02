@@ -1,5 +1,7 @@
 # Google Flow Automator
 
+![Google Flow Automator Banner](icon.jpeg)
+
 A robust Puppeteer automation script to batch-generate and download images from Google Flow. Designed for both human users and autonomous AI agents.
 
 ## 🤖 For AI Agents & LLMs
