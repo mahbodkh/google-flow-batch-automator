@@ -1,7 +1,12 @@
 const puppeteer = require("puppeteer-core");
 const path = require("path");
 
+const os = require("os");
+const fs = require("fs");
+const { spawn } = require("child_process");
+
 const DOWNLOADS_DIR = path.join(__dirname, "downloads");
+const ROOT = __dirname;
 
 function getArg(name, defaultVal) {
   const i = process.argv.indexOf(`--${name}`);
@@ -16,18 +21,61 @@ if (!PROJECT_ID) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// ── Auto-Launch Chrome ────────────────────────────────────────────
+function getChromePath() {
+  const platform = os.platform();
+  if (platform === "darwin") {
+    return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  } else if (platform === "win32") {
+    const paths = [
+      "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+      (process.env.LOCALAPPDATA || "") + "\\Google\\Chrome\\Application\\chrome.exe"
+    ];
+    for (const p of paths) {
+      if (fs.existsSync(p)) return p;
+    }
+    return "chrome.exe";
+  } else {
+    return "google-chrome"; // Linux fallback
+  }
+}
+
+async function connectOrLaunchChrome() {
+  try {
+    return await puppeteer.connect({ browserURL: "http://127.0.0.1:9222", defaultViewport: null });
+  } catch {
+    console.log("    🚀 Chrome not running. Launching automatically...");
+    const chromePath = getChromePath();
+    const profilePath = path.join(ROOT, ".chrome-profile");
+    
+    const child = spawn(chromePath, [
+      "--remote-debugging-port=9222",
+      `--user-data-dir=${profilePath}`,
+      "--no-first-run",
+      "--no-default-browser-check"
+    ], {
+      detached: true,
+      stdio: "ignore"
+    });
+    
+    child.unref(); // detach
+    
+    for (let i = 0; i < 10; i++) {
+      await sleep(1000);
+      try {
+        return await puppeteer.connect({ browserURL: "http://127.0.0.1:9222", defaultViewport: null });
+      } catch (e) {}
+    }
+    throw new Error("Failed to connect to Chrome after launching.");
+  }
+}
+
 async function run() {
   console.log(`\n🚀 Starting bulk download for project: ${PROJECT_ID}\n`);
 
-  // Connect to Chrome
-  const browserURL = "http://127.0.0.1:9222";
-  let browser;
-  try {
-    browser = await puppeteer.connect({ browserURL, defaultViewport: null });
-  } catch (err) {
-    console.error("❌ Could not connect to Chrome. Is it running with --remote-debugging-port=9222?");
-    process.exit(1);
-  }
+  // Connect to Chrome or launch it
+  const browser = await connectOrLaunchChrome();
 
   const pages = await browser.pages();
   let page = pages.find((p) => p.url().includes("labs.google"));
