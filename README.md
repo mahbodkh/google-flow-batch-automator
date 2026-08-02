@@ -54,7 +54,7 @@ node run.js --skip-download
 
 **Resume from a specific prompt in a specific project:**
 ```bash
-node run.js --start 8 --project <PROJECT_UUID> --skip-download
+node run.js --start <PROMPT_NUMBER> --project <PROJECT_UUID> --skip-download
 ```
 
 ### 2. Bulk Downloading
