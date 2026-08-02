@@ -1,0 +1,24 @@
+# Google Flow Automator - AI Assistant Guidelines
+
+If you are an AI coding assistant (Claude, GPT, Antigravity, etc.) tasked with modifying this repository, you MUST adhere to the following architectural rules. 
+
+Failure to follow these rules will break the script due to Google Flow's anti-bot and UI-specific implementations.
+
+## 1. UI Interactions (Radix UI)
+Google Flow relies heavily on Radix UI components. Standard JavaScript DOM `.click()` events will be intercepted and completely ignored by dropdown menus and buttons. 
+- **DO NOT** use `element.click()` or `page.evaluate(el => el.click())`.
+- **ALWAYS** extract the bounding client rect coordinates and use `page.mouse.click(x, y)` to simulate real physical mouse pointer events.
+
+## 2. Browser Launching (Headless Mode)
+Google Flow utilizes aggressive bot-detection. 
+- **DO NOT** attempt to convert this script to run in Puppeteer's `headless: true` mode. It will be blocked.
+- The script is designed to detach a real, visible Chrome instance with a dedicated `--user-data-dir=.chrome-profile` to persist authentic Google Account sessions. 
+
+## 3. Downloads (CDP)
+Puppeteer's standard download configurations are often unreliable for this specific application.
+- **ALWAYS** use the Chrome DevTools Protocol (CDP) `Browser.setDownloadBehavior` directly on the browser target session. 
+- **DO NOT** use `Page.setDownloadBehavior`.
+
+## 4. Error Handling
+- Do not attempt to retry generations by clicking buttons inside the Google Flow UI. The UI state frequently corrupts on timeouts.
+- **ALWAYS** recover by navigating to the base `/project/` URL or creating an entirely new project via `createNewProject(page, true)`.
