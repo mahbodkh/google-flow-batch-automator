@@ -23,8 +23,8 @@ cd google-flow-batch-automator
 npm install
 
 # 3. Setup your prompts
-cp prompts.sample.txt prompts.txt
-# Edit prompts.txt to contain one prompt per line
+Create a copy of `prompts.sample.txt` and rename the copy to `prompts.txt`. 
+Open `prompts.txt` and paste your desired prompts (one prompt per line).
 ```
 
 ## 🚀 CLI Commands & Usage
