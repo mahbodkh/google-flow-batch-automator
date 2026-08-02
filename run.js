@@ -63,6 +63,12 @@ async function createNewProject(page, forceNew = false) {
       }
       if (box) {
         console.log("    ✅ Editor ready!");
+        const currentUrl = page.url();
+        const uuidMatch = currentUrl.match(/project\/([a-zA-Z0-9-]+)/);
+        if (uuidMatch) {
+          console.log(`    🔗 New Project UUID: ${uuidMatch[1]}`);
+          console.log(`       (Save this UUID to run the download script later!)`);
+        }
         return;
       }
       await sleep(1000);
@@ -108,6 +114,12 @@ async function createNewProject(page, forceNew = false) {
     const box = await page.$('[contenteditable][role="textbox"]');
     if (box) {
       console.log("    ✅ Editor ready!");
+      const currentUrl = page.url();
+      const uuidMatch = currentUrl.match(/project\/([a-zA-Z0-9-]+)/);
+      if (uuidMatch) {
+        console.log(`    🔗 New Project UUID: ${uuidMatch[1]}`);
+        console.log(`       (Save this UUID to run the download script later!)`);
+      }
       return;
     }
     await sleep(1000);
